@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Input } from '../components/ui/input';
 import { SelectBudgetOptions, SelectTravelList } from '@/constants/options';
 
-// Function to update map center
+// Function to update map center dynamically
 function ChangeView({ center }) {
   const map = useMap();
   map.setView(center, 12);
@@ -13,9 +13,21 @@ function ChangeView({ center }) {
 
 function CreateTrip() {
   const inputRef = useRef(null);
-  const [center, setCenter] = useState({ lat: 12.9716, lng: 77.5946 }); // Default: Bangalore, India
+  const [center, setCenter] = useState({ lat: 26.8467, lng: 80.9462 }); // Default: Lucknow, India
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [formData, setFormData] = useState({});
+
+  const handleInputChange = (name, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    console.log('Updated Form Data:', formData);
+  }, [formData]);
+
   // Function to handle search
   const handleSearch = async () => {
     if (!searchQuery) return;
@@ -30,6 +42,12 @@ function CreateTrip() {
           lng: parseFloat(data[0].lon),
         };
         setCenter(newCenter);
+
+        // Store location with city name and details
+        handleInputChange('location', { 
+          label: data[0].display_name, 
+          value: { description: data[0].display_name } 
+        });
       }
     } catch (error) {
       console.error('Error fetching location:', error);
