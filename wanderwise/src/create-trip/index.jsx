@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api';
 
 import { Input } from '../components/ui/input'; // Adjust the relative path
+import { SelectBudgetOptions, SelectTravelList } from '@/constants/options';
 
 
 function CreateTrip() {
@@ -68,15 +69,43 @@ function CreateTrip() {
                   marginTop: '20px',
                 }}
               />
-              
+
             </StandaloneSearchBox>
           </GoogleMap>
         </div>
         <div>
-            <h2 className='text-xl my-3 font-medium'>How many days are you planning your trip</h2>
-            <Input placeholder={'Ex.3'} type='number'></Input>
+          <h2 className='text-xl my-3 font-medium'>How many days are you planning your trip</h2>
+          <Input placeholder={'Ex.3'} type='number'></Input>
         </div>
       </div>
+      <div>
+        <h2 className='text-xl my-3 font-medium'>What is your Budget?</h2>
+        <div className='grid grid-cols-3 gap-5 mt-5'>
+          {SelectBudgetOptions.map((item, index) => (
+            <div key={index} className="p-4 border cursor-pointer rounded-lg hover:shadow"> {/* Corrected className placement */}
+              <h2 className='text-3xl'>{item.icon}</h2>
+              <h2 className='font-bold text-'>{item.title}</h2>
+              <h2 className='text-sm text-gray-500'>{item.desc}</h2>
+            </div>
+          ))}
+        </div>
+
+      </div>
+      <div>
+        <h2 className='text-xl my-3 font-medium'>Who do you plan on travelling with on your next adventure?</h2>
+        <div className='grid grid-cols-3 gap-5 mt-5'>
+          {SelectTravelList.map((item, index) => (
+            <div key={index} className="p-4 border cursor-pointer rounded-lg hover:shadow"> {/* Corrected className placement */}
+              <h2 className='text-3xl'>{item.icon}</h2>
+              <h2 className='font-bold text-'>{item.title}</h2>
+              <h2 className='text-sm text-gray-500'>{item.desc}</h2>
+            </div>
+          ))}
+        </div>
+
+      </div>
+      <div className='mt-10 justify-end flex'><button>Genrate Trip</button></div>
+      
     </div>
   );
 }
