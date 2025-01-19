@@ -18,6 +18,7 @@ function CreateTrip() {
   const [formData, setFormData] = useState({});
 
   const handleInputChange = (name, value) => {
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -28,6 +29,13 @@ function CreateTrip() {
     console.log('Updated Form Data:', formData);
   }, [formData]);
 
+  const OnGenerateTrip=()=>{
+    if(formData?.noOfDays>5)
+    {
+      return;
+    }
+    console.log(formData);
+  }
   // Function to handle search
   const handleSearch = async () => {
     if (!searchQuery) return;
@@ -93,7 +101,9 @@ function CreateTrip() {
         {/* Trip Duration */}
         <div>
           <h2 className='text-xl my-3 font-medium'>How many days are you planning your trip?</h2>
-          <Input placeholder={'Ex.3'} type='number' />
+          <Input placeholder={'Ex.3'} type='number'
+          onChange={(e)=>handleInputChange('noOfDays',e.target.value)}
+          />
         </div>
       </div>
 
@@ -102,7 +112,11 @@ function CreateTrip() {
         <h2 className='text-xl my-3 font-medium'>What is your Budget?</h2>
         <div className='grid grid-cols-3 gap-5 mt-5'>
           {SelectBudgetOptions.map((item, index) => (
-            <div key={index} className="p-4 border cursor-pointer rounded-lg hover:shadow">
+            <div key={index} 
+            onClick={()=>handleInputChange('budget',item.title)}
+            className={`p-4 border cursor-pointer rounded-lg
+            ${formData?.budget==item.title &&'shadow-lg border-black'}
+            `}>
               <h2 className='text-3xl'>{item.icon}</h2>
               <h2 className='font-bold'>{item.title}</h2>
               <h2 className='text-sm text-gray-500'>{item.desc}</h2>
@@ -116,7 +130,11 @@ function CreateTrip() {
         <h2 className='text-xl my-3 font-medium'>Who do you plan on travelling with on your next adventure?</h2>
         <div className='grid grid-cols-3 gap-5 mt-5'>
           {SelectTravelList.map((item, index) => (
-            <div key={index} className="p-4 border cursor-pointer rounded-lg hover:shadow">
+            <div key={index}
+            onClick={()=>handleInputChange('traveler',item.people)}
+            className={`p-4 border cursor-pointer rounded-lg 
+            hover:shadow
+            ${formData?.traveler==item.people &&'shadow-lg border-black'}`}>
               <h2 className='text-3xl'>{item.icon}</h2>
               <h2 className='font-bold'>{item.title}</h2>
               <h2 className='text-sm text-gray-500'>{item.desc}</h2>
@@ -127,7 +145,7 @@ function CreateTrip() {
 
       {/* Generate Trip Button */}
       <div className='mt-10 justify-end flex'>
-        <button className="px-6 py-2 bg-green-500 text-white rounded">Generate Trip</button>
+        <button onClick={OnGenerateTrip}className="px-6 py-2 bg-green-500 text-white rounded">Generate Trip</button>
       </div>
     </div>
   );
